@@ -2,6 +2,7 @@ from imaging.scanner import Chat
 from settings.settings import Settings
 from rsinput.input import RSInput
 from commands.command import EmoteCommand, AdditionCommand, StaticCommand
+from actions.action import Herblore
 from time import sleep
 
 settings = Settings('config.ini')
@@ -9,10 +10,10 @@ chat = Chat(settings)
 rs_input = RSInput()
 
 commands = {
-    'dance': EmoteCommand(value='dance', summary='Fuck you', rs_input=rs_input, settings=settings),
-    'jig': EmoteCommand(value='jig', summary='Jig you', rs_input=rs_input, settings=settings),
+    'dance': EmoteCommand(value='dance', summary='Dances his heart out.', rs_input=rs_input, settings=settings),
+    'jig': EmoteCommand(value='jig', summary='Does a jig :)', rs_input=rs_input, settings=settings),
     'celebrate': EmoteCommand(value='celebrate', summary='Celebrate :3', rs_input=rs_input, settings=settings),
-    'salute': EmoteCommand(value='salute', summary='I salute you', rs_input=rs_input, settings=settings),
+    'salute': EmoteCommand(value='salute', summary='I salute you.', rs_input=rs_input, settings=settings),
     'panic': EmoteCommand(value='panic', summary='Oh no :(', rs_input=rs_input, settings=settings),
     'add': AdditionCommand(value='2+2', summary='I can do math :3', rs_input=rs_input, settings=settings),
     'about': StaticCommand(
@@ -27,13 +28,25 @@ commands = {
         settings=settings)
 }
 
-def run(cmd):
-    print(cmd)
-    commands[cmd].execute()
+actions = {
+    'herblore': Herblore(
+        title='Potion maker',
+        skill='Herblore',
+        preset='2',
+        hotbar_key='z',
+        rs_input=rs_input,
+        settings=settings)
+}
+
+def run(cmd, obj_type=commands):
+    obj_type[cmd].execute()
 
 # TODO: Finish command handler
 if __name__ == '__main__':
     tmp = None
+
+    while 1:
+        run('herblore', actions)
 
     while 1:
         last_msg = chat.read_chatbox().lower()

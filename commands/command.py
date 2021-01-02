@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from actions.emote import Emote
 from time import sleep
 

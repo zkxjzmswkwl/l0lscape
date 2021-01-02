@@ -32,9 +32,17 @@ class RSInput:
 
     def click(self, x, y):
         self._mouse.position = (x, y)
-        sleep(0.1)
+        sleep(uniform(0.08, 0.152))
         self._mouse.press(Button.left)
+        sleep(uniform(0.04, 0.118))
         self._mouse.release(Button.left)
 
+    def tap_key(self, key):
+        self._keyboard.press(key)
+        sleep(uniform(0.08, 0.152))
+        self._keyboard.release(key)
 
-
+    def tap_space(self):
+        self._keyboard.press(Key.space)
+        sleep(uniform(0.08, 0.152))
+        self._keyboard.release(Key.space)
