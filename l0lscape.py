@@ -1,7 +1,7 @@
 from imaging.scanner import Chat
 from settings.settings import Settings
 from rsinput.input import RSInput
-from commands.command import EmoteCommand, AdditionCommand
+from commands.command import EmoteCommand, AdditionCommand, StaticCommand
 from time import sleep
 
 settings = Settings('config.ini')
@@ -14,19 +14,32 @@ commands = {
     'celebrate': EmoteCommand(value='celebrate', summary='Celebrate :3', rs_input=rs_input, settings=settings),
     'salute': EmoteCommand(value='salute', summary='I salute you', rs_input=rs_input, settings=settings),
     'panic': EmoteCommand(value='panic', summary='Oh no :(', rs_input=rs_input, settings=settings),
-    'add': AdditionCommand(value='2+2', summary='I can do math :3', rs_input=rs_input, settings=settings)
+    'add': AdditionCommand(value='2+2', summary='I can do math :3', rs_input=rs_input, settings=settings),
+    'about': StaticCommand(
+        value='l0lscape. Try writing "command help".', 
+        summary='About command.',
+        rs_input=rs_input,
+        settings=settings),
+    'help': StaticCommand(
+        value='My instructions must start with "command". dance celebrate jig salute & panic.',
+        summary='Help command.',
+        rs_input=rs_input,
+        settings=settings)
 }
 
 def run(cmd):
     print(cmd)
     commands[cmd].execute()
 
-
 # TODO: Finish command handler
 if __name__ == '__main__':
+    tmp = None
 
     while 1:
         last_msg = chat.read_chatbox().lower()
+        if last_msg != tmp:
+            print(last_msg)
+            tmp = last_msg
 
         if 'command' in last_msg:
             print(last_msg)
@@ -47,6 +60,4 @@ if __name__ == '__main__':
                 run('add')
                 sleep(1)
                 
-
         sleep(0.1)
-        

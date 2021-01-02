@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 from actions.emote import Emote
 from time import sleep
 
@@ -26,13 +25,22 @@ class Command:
         self._emote.perform(name)
 
 
+class StaticCommand(Command):
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def execute(self):
+        super().say(self.value)
+
+
 class EmoteCommand(Command):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def execute(self):
-        super().say(f'Executing cmd: {self.value}!')
+        super().say(f'L0lscape chat bot executing cmd: {self.value}!')
         sleep(0.2)
         super().emote(self.value)
 
@@ -45,6 +53,6 @@ class AdditionCommand(Command):
     def execute(self):
         i, j = self.value.split('+')
         print(i, j)
-        super().say(str(int(i) + int(j)))
+        super().say(f'L0Lscape chat bot: The sum of {i} + {j} is {str(int(i) + int(j))}!')
 
 
