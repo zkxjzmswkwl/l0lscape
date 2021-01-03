@@ -14,6 +14,8 @@ class Command:
 
         self._emote = Emote(self._settings, self._input)
 
+        print(f'<-- Command with summary {self.summary} instantiated -->')
+
     @abstractmethod
     def execute(self):
         pass
@@ -55,5 +57,30 @@ class AdditionCommand(Command):
         i, j = self.value.split('+')
         print(i, j)
         super().say(f'L0Lscape chat bot: The sum of {i} + {j} is {str(int(i) + int(j))}!')
+        sleep(1)
+
+
+class DivisionCommand(Command):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def execute(self):
+        i, j = self.value.split('/')
+        print(i, j)
+        super().say(f'{i} / {j} equals {int(i) / int(j)}')
+        sleep(1)
+
+
+class MultiplicationCommand(Command):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def execute(self):
+        i, j = self.value.split('*')
+        print(i, j)
+        super().say(f'{i} * {j} equals {int(i) * int(j)}')
+        sleep(1)
 
 

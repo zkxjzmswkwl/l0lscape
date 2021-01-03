@@ -37,7 +37,7 @@ class Herblore(Action):
         print(f'Starting {self.title} module for the {self.skill} skill.')
         super().range_sleep(1, 2)
         self._input.click(int(self._bank_x), int(self._bank_y))
-        super().range_sleep()
+        super().range_sleep(1, 2)
         self._input.tap_key(self.preset)
         super().range_sleep(1, 2)
         self._input.tap_key(self.hotbar_key)

@@ -20,10 +20,10 @@ class RSInput:
         for word in msg:
             for char in word:
                 self._keyboard.press(char)
-                sleep(uniform(0.02, 0.035))
+                sleep(uniform(0.02, 0.025))
                 self._keyboard.release(char)
 
-            sleep(0.2)
+            sleep(0.05)
             self._keyboard.press(Key.space)
             self._keyboard.release(Key.space)
 
