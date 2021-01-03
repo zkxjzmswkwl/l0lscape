@@ -21,36 +21,22 @@ class Identification:
         self._input = kwargs.pop('rs_input', None)
 
     def match_image(self, img):
-        if self.current_count > self._image_count:
-            self.current_count = 1
+        sub_img = cv2.imread(f'resources/{self._monster}.png')
 
+        # Preprocess both player spectator widget and hero template
+        sub_img = Imaging.preprocess(sub_img)
         img = Imaging.preprocess(img)
 
-        monster_img = cv2.imread(f'resources/{self._monster}-{self.current_count}.png')
-        print(f'{self._monster}-{self.current_count}.png')
-        monster_img = Imaging.preprocess(monster_img)
-        w, h = monster_img.shape[:-1]
-        #w, h = monster_img.shape
+        w, h = sub_img.shape[:-1]
 
-        res = cv2.matchTemplate(img, monster_img, cv2.TM_CCOEFF_NORMED)
-        threshold = 0.82
+        res = cv2.matchTemplate(img, sub_img, cv2.TM_CCOEFF_NORMED)
+        threshold = .69
         loc = np.where(res >= threshold)
 
-        self.current_count += 1
+        for pt in zip(*loc[::-1]):
+            cv2.rectangle(img, pt, (pt[0] + 5 + w, pt[1] + h), (255, 255, 0), 2)
 
-        locs = []
-        for _,pt in enumerate(zip(*loc[::-1])):
-            cv2.rectangle(img, pt, (pt[0] + 5 + w, pt[1] + h), (0, 255, 0), 2)
-            if _ == 0:
-                locs.append(pt[0])
-                locs.append(pt[1])
-        if len(locs) > 0:
-            cv2.imshow('Rabbit', img)
-            cv2.waitKey(0)
-#        return loc[:-2]
-        return locs
-
-        return None
+        return loc
 
     def find_color(self, img):
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -59,10 +45,13 @@ class Identification:
         upper = np.array([110, 140, 255], np.uint8)
 
         mask = cv2.inRange(img_hsv, lower, upper)
-        cv2.imshow('aaa', mask);cv2.waitKey(0)
+
+        cv2.imshow('debug', mask);cv2.waitKey(0)
+
         i = np.column_stack(np.where(mask < 50))[0].tolist()
 
-#        return i
+        return i
+
 
     @abstractmethod
     def execute(self, region):

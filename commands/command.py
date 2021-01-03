@@ -23,6 +23,7 @@ class Command:
     def say(self, msg):
         msg = msg.split(' ')
         self._input.write(msg)
+        sleep(1)
 
     def emote(self, name):
         self._emote.perform(name)
@@ -57,7 +58,6 @@ class AdditionCommand(Command):
         i, j = self.value.split('+')
         print(i, j)
         super().say(f'L0Lscape chat bot: The sum of {i} + {j} is {str(int(i) + int(j))}!')
-        sleep(1)
 
 
 class DivisionCommand(Command):
@@ -69,7 +69,6 @@ class DivisionCommand(Command):
         i, j = self.value.split('/')
         print(i, j)
         super().say(f'{i} / {j} equals {int(i) / int(j)}')
-        sleep(1)
 
 
 class MultiplicationCommand(Command):
@@ -81,6 +80,5 @@ class MultiplicationCommand(Command):
         i, j = self.value.split('*')
         print(i, j)
         super().say(f'{i} * {j} equals {int(i) * int(j)}')
-        sleep(1)
 
 

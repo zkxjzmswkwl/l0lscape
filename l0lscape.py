@@ -3,7 +3,8 @@ from imaging.identification import Rabbit
 from settings.settings import Settings
 from rsinput.input import RSInput
 from commands.command import EmoteCommand, AdditionCommand, StaticCommand, DivisionCommand, MultiplicationCommand
-from actions.action import Herblore
+from commands.weather import Weather
+from actions.action import Herblore, Fletching
 from actions.movement.movement import Move
 from time import sleep
 
@@ -40,6 +41,7 @@ commands = {
     'go=south' : Move(tiles=1, direction='South', rs_input=rs_input, settings=settings),
     'go=west'  : Move(tiles=1, direction='West', rs_input=rs_input, settings=settings),
     'go=east'  : Move(tiles=1, direction='East', rs_input=rs_input, settings=settings),
+    'weather'  : Weather(value='Irvine', summary='Gives current weather.', rs_input=rs_input, settings=settings)
 }
 
 actions = {
@@ -48,6 +50,13 @@ actions = {
         skill='Herblore',
         preset='2',
         hotbar_key='z',
+        rs_input=rs_input,
+        settings=settings),
+    'fletching': Fletching(
+        title='Fletches preset',
+        skill='Fletching',
+        preset='1',
+        hotbar_key='1',
         rs_input=rs_input,
         settings=settings)
 }
@@ -76,9 +85,14 @@ if __name__ == '__main__':
         if 'command' in last_msg:
             print(last_msg)
 
+            if 'weather' in last_msg:
+                commands['weather'].value = last_msg.split('weather ')[1].split(' ')
+                run('weather')
+
             cmd = last_msg.split('command ')[1].strip()
 
             if cmd in commands.keys():
+
                 run(cmd)
                 sleep(1)
 
