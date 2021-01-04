@@ -25,7 +25,7 @@ def on_click(x, y, button, pressed):
 #            y2 = y
 #
 #            config['POSITIONS']['chat'] = f'{x1}-{y1}-{x2}-{y2}'
-        config['POSITIONS']['south_tile'] = f'{x}-{y}'
+        config['POSITIONS']['compass'] = f'{x}-{y}'
         with open('config.ini', 'w') as conf_file:
             config.write(conf_file)
 

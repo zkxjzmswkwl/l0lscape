@@ -20,17 +20,15 @@ class Identification:
         self._settings = kwargs.pop('settings', None)
         self._input = kwargs.pop('rs_input', None)
 
-    def match_image(self, img):
+    def match_image(self, img, threshold=0.69):
         sub_img = cv2.imread(f'resources/{self._monster}.png')
 
-        # Preprocess both player spectator widget and hero template
         sub_img = Imaging.preprocess(sub_img)
         img = Imaging.preprocess(img)
 
         w, h = sub_img.shape[:-1]
 
         res = cv2.matchTemplate(img, sub_img, cv2.TM_CCOEFF_NORMED)
-        threshold = .69
         loc = np.where(res >= threshold)
 
         for pt in zip(*loc[::-1]):
@@ -38,7 +36,14 @@ class Identification:
 
         return loc
 
-    def find_color(self, img):
+    @staticmethod
+    def find_color(self, img, upper, lower):
+        """Returns stacked column of x,y coordinates
+        of hsv range
+
+        img -- np.array
+        """
+
         img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         lower = np.array([100, 130, 200], np.uint8)
@@ -48,10 +53,7 @@ class Identification:
 
         cv2.imshow('debug', mask);cv2.waitKey(0)
 
-        i = np.column_stack(np.where(mask < 50))[0].tolist()
-
-        return i
-
+        return np.column_stack(np.where(mask < 50))[0].tolist()
 
     @abstractmethod
     def execute(self, region):

@@ -1,5 +1,6 @@
 from imaging.scanner import Chat
 from imaging.identification import Rabbit
+from imaging.base import Capture
 from settings.settings import Settings
 from rsinput.input import RSInput
 from commands.command import EmoteCommand, AdditionCommand, StaticCommand, DivisionCommand, MultiplicationCommand
@@ -76,23 +77,24 @@ def run(cmd, obj_type=commands):
 if __name__ == '__main__':
     tmp = None
 
+#    a = Capture()
+#    a.run()
+
     while 1:
         last_msg = chat.read_chatbox().lower()
         if last_msg != tmp:
-            print(last_msg)
             tmp = last_msg
+            print(last_msg)
 
         if 'command' in last_msg:
             print(last_msg)
+            cmd = last_msg.split('command ')[1].strip()
 
             if 'weather' in last_msg:
                 commands['weather'].value = last_msg.split('weather ')[1].split(' ')
                 run('weather')
 
-            cmd = last_msg.split('command ')[1].strip()
-
             if cmd in commands.keys():
-
                 run(cmd)
                 sleep(1)
 

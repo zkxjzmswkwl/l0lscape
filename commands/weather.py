@@ -12,7 +12,9 @@ class Weather(Command):
 
     # This is retarded I just didn't want to register an API key for a weather api.
     def execute(self):
+        print('FUCK', self.value)
         r = requests.get(WEATHER_URL + f'{self.value[0]}/{self.value[1].strip()}')
+        print(r.url)
         soup = BeautifulSoup(r.text, 'html.parser')
         temp = soup.find('div', {'class': 'current-temp'}).text
 

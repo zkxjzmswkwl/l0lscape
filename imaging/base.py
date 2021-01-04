@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
-import pyscreenshot as screen
+from mss import mss
+import pyautogui
 
 
 class Imaging:
@@ -14,23 +15,32 @@ class Imaging:
         snapshot = cv2.cvtColor(snapshot, cv2.COLOR_BGR2GRAY)
         snapshot = cv2.dilate(snapshot, kernel, iterations=1)
         snapshot = cv2.erode(snapshot, kernel, iterations=1)
-        snapshot = cv2.medianBlur(snapshot, 3)
         snapshot = cv2.threshold(cv2.medianBlur(snapshot, 3), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 #        cv2.imshow('debug', snapshot);cv2.waitKey(0)
         return snapshot
 
     @staticmethod
-    def screenshot(bbox=(0,0,0,0)):
+    def screenshot(**kwargs):
         """Takes a snapshot of screen region and applies preprocessing.
 
-        Keyword argument:
-        bbox -- bounding box (default 0,0,0,0)
+        Keyword arguments:
+
+        top    -- int
+        left   -- int
+        width  -- int
+        height -- int
         """
 
-        # Take snapshot of region (defined as `bbox`) and cast it to a numpy array.
-        snapshot = np.asarray(screen.grab(bbox=bbox))
-        
+        snapshot = np.asarray(mss().grab(kwargs))
         snapshot = Imaging.preprocess(snapshot)
-
         return snapshot
         
+
+class Capture:
+
+    def run(self):
+        while True:
+            cv2.imshow('L0lscape', Imaging.screenshot(top=0, left=0, width=3840, height=2160)) 
+            if cv2.waitKey(1) == ord('q'):
+                cv2.destroyAllWindows()
+                break

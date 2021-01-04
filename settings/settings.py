@@ -24,7 +24,7 @@ class Settings:
         """
 
         if is_list:
-            return self._config[section].get(key).split('-')
+            return list(map(int, self._config[section].get(key).split('-')))
         return self._config[section].get(key)
 
 
